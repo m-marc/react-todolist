@@ -1,0 +1,10 @@
+.App {
+  padding: 30px;
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.App > div {
+  margin-right: 50px;
+}
