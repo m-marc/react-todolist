@@ -24,22 +24,36 @@ export const changeFilter = (taskList: Array<TaskType>, filter: FilterValuesType
     else return taskList
 }
 
+export const deleteTask = (taskList: Array<TaskType>, id: string): Array<TaskType> => {
+    return taskList.filter(t => t.id !== id)
+}
+
+export const addTask = (taskList: Array<TaskType>, title: string): Array<TaskType> => {
+    const newTask = {
+        id: v1(),
+        title: title,
+        isDone: false
+    }
+    return [newTask, ...taskList]
+}
+
 function App() {
     const [tasks, setTasks] = useState<Array<TaskType>>(initData)
     const [filter, setFilter] = useState<FilterValuesType>("all")
     const filteredTasks = changeFilter(tasks, filter);
+    const deleteTaskCallback = (id: string) => setTasks(deleteTask(tasks, id))
 
-    function removeTask(id: string) {
-        return setTasks(tasks.filter(t => t.id !== id))
-    }
+
+    const addTaskCallback = (title:string) => setTasks(addTask(tasks,title))
 
 
     return (
         <div className="App">
             <Todolist title="What to learn"
                       tasks={filteredTasks}
-                      removeTask={removeTask}
+                      deleteTaskCallback={deleteTaskCallback}
                       changeFilter={setFilter}
+                      addTaskCallback={addTaskCallback}
             />
         </div>
     );
