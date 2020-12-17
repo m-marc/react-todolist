@@ -59,6 +59,12 @@ export const changeStatus = (taskList: TaskStateType, id: string, status: boolea
     return {...taskList}
 }
 
+export const changeTaskTitle = (taskList: TaskStateType, id: string, newTitle: string, listId: string) => {
+    const selectedTask = taskList[listId].find(t => t.id === id)
+    if (selectedTask) selectedTask.title = newTitle
+    return {...taskList}
+}
+
 export const deleteTask = (taskList: TaskStateType,listId: string, id: string): TaskStateType => {
     taskList[listId] = taskList[listId].filter(t => t.id !== id)
     return {...taskList}
@@ -80,6 +86,7 @@ function App() {
     const deleteTaskCallback = (id: string, listId: string) => setTasks(deleteTask(tasks,listId, id))
     const addTaskCallback = (title: string, listId: string) => setTasks(addTask(tasks, title, listId))
     const changeStatusCallback = (id: string, status: boolean, listId: string) => setTasks(changeStatus(tasks, id, status, listId))
+    const changeTaskTitleCallback = (id: string, newTitle: string, listId: string) => setTasks(changeTaskTitle(tasks, id, newTitle, listId))
 
     const changeFilter = (todoListID: string, filter: FilterValuesType) => {
         let selectedList = todoList.find(tl => tl.id === todoListID)
@@ -93,6 +100,14 @@ function App() {
         setTodoList(todoList.filter(tl => tl.id != id))
         delete tasks[id]
         setTasks({...tasks})
+    }
+
+    const changeListTitle = (id: string, newTitle: string) => {
+        let selectedList = todoList.find(tl => tl.id === id)
+        if (selectedList) {
+            selectedList.title = newTitle
+            setTodoList([...todoList])
+        }
     }
 
     const addList = (title: string) => {
@@ -125,6 +140,8 @@ function App() {
                         changeFilter={changeFilter}
                         addTaskCallback={addTaskCallback}
                         changeStatusCallback={changeStatusCallback}
+                        changeTaskTitle={changeTaskTitleCallback}
+                        changeListTitle={changeListTitle}
                         filter={tl.filter}
                         removeListCallback={removeList} />
                 })
