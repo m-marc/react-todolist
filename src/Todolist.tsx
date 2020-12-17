@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 import {FilterValuesType, TaskType} from "./App";
 import SingleTask from "./SingleTask";
+import AddItemForm from "./AddItemForm";
 
 type TaskListPropsType = {
     title: string
@@ -15,7 +16,12 @@ type TaskListPropsType = {
 }
 
 const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, changeStatusCallback, addTaskCallback, title, changeFilter, filter, id, removeListCallback}) => {
-    const [error, setError] = useState<string | null>(null)
+    const s = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    }
+
     const mappedList = tasks.map((t: TaskType)  => (
         <SingleTask
             key={t.id}
@@ -25,41 +31,12 @@ const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, chang
             changeStatusCallback={changeStatusCallback} />
     ))
 
-    const [stateTitle, setTitle] = useState("")
-
-    const addCallback = () => {
-        if (stateTitle.trim() !== "") {
-            addTaskCallback(stateTitle, id)
-            setTitle("")
-        } else setError("Title is required")
-    }
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
-    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === "Enter") addCallback()
-    }
-
-    const onAllClickHandler = (e: React.MouseEvent<HTMLElement>) => {
-        changeFilter(id, "all")
-    }
-    const onActiveClickHandler = (e: React.MouseEvent<HTMLElement>) => {
-        changeFilter(id,"active")
-    }
-    const onCompletedClickHandler = (e: React.MouseEvent<HTMLElement>) => {
-        changeFilter(id,"completed")
-    }
-
+    const onAllClickHandler = (e: React.MouseEvent<HTMLElement>) => changeFilter(id, "all")
+    const onActiveClickHandler = (e: React.MouseEvent<HTMLElement>) => changeFilter(id,"active")
+    const onCompletedClickHandler = (e: React.MouseEvent<HTMLElement>) => changeFilter(id,"completed")
     const onClickRemoveHandler = (e: React.MouseEvent<HTMLElement>) => removeListCallback(id)
 
-    const s = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    }
+    const handleAdd = (itemTitle: string) => addTaskCallback(itemTitle, id)
 
     return (
         <div>
@@ -67,16 +44,7 @@ const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, chang
                 <h3>{title}</h3>
                 <button onClick={onClickRemoveHandler}>&#9747;</button>
             </div>
-
-            <div>
-                <input value={stateTitle}
-                       onChange={onChangeHandler}
-                       onKeyPress={onKeyPressHandler}
-                       className={error ? "error" : ""}
-                />
-                <button onClick={addCallback}>+</button>
-                {error && <div className="error-message">{error}</div>}
-            </div>
+            <AddItemForm addItem={handleAdd}/>
             <ul>
                 {mappedList}
             </ul>
