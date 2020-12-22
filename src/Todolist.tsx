@@ -3,6 +3,8 @@ import {FilterValuesType, TaskType} from "./App";
 import SingleTask from "./SingleTask";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
+import {IconButton, Button} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 type TaskListPropsType = {
     title: string
@@ -49,16 +51,18 @@ const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, chang
                 <h3>
                     <EditableSpan title={title} onChange={handleChangeTitle}/>
                 </h3>
-                <button onClick={onClickRemoveHandler}>&#9747;</button>
+                <IconButton onClick={onClickRemoveHandler}>
+                    <Delete/>
+                </IconButton>
             </div>
             <AddItemForm addItem={handleAdd}/>
             <ul>
                 {mappedList}
             </ul>
-            <div>
-                <button className={filter === "all" ? "active-filter" : ""} onClick={onAllClickHandler}>All</button>
-                <button className={filter === "active" ? "active-filter" : ""} onClick={onActiveClickHandler}>Active</button>
-                <button className={filter === "completed" ? "active-filter" : ""} onClick={onCompletedClickHandler}>Completed</button>
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+                <Button variant={filter === "all" ? "outlined" : "text"} color={"default"} onClick={onAllClickHandler}>All</Button>
+                <Button variant={filter === "active" ? "outlined" : "text"} color={"primary"} onClick={onActiveClickHandler}>Active</Button>
+                <Button variant={filter === "completed" ? "outlined" : "text"} color={"secondary"} onClick={onCompletedClickHandler}>Completed</Button>
             </div>
         </div>
     )

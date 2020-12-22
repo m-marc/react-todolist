@@ -1,25 +1,25 @@
-.App {
-  padding: 30px;
-  display: flex;
-  max-width: 1400px;
-  margin: 0 auto;
-}
+/*.App {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*  max-width: 1400px;*/
+/*  margin: 0 auto;*/
+/*}*/
 
-.App > div {
-  margin-right: 50px;
-}
-.error {
-  border: red 1px solid;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
+/*.error {*/
+/*  border: red 1px solid;*/
+/*}*/
 
-.error-message {
-  color: red;
-}
+/*.error-message {*/
+/*  color: red;*/
+/*}*/
 
-.active-filter {
-  background-color: #d6e2e0;
-}
+/*.active-filter {*/
+/*  background-color: #d6e2e0;*/
+/*}*/
 
-.is-done {
-  opacity: .5;
-}
+/*.is-done {*/
+/*  opacity: .5;*/
+/*}*/
