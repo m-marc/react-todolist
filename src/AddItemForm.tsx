@@ -6,8 +6,7 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-const AddItemForm: React.FC<AddItemFormPropsType> = ({ addItem }) => {
-
+const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({ addItem }) => {
     const [stateTitle, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
 
@@ -16,7 +15,7 @@ const AddItemForm: React.FC<AddItemFormPropsType> = ({ addItem }) => {
     }
 
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        error && setError(null)
         if (e.key === "Enter") handleClick()
     }
     //add new item on button click
@@ -40,6 +39,6 @@ const AddItemForm: React.FC<AddItemFormPropsType> = ({ addItem }) => {
             <AddBox />
         </IconButton>
     </div>
-}
+})
 
 export default AddItemForm

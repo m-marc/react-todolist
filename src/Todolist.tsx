@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {FilterValuesType, TaskType} from "./App";
 import SingleTask from "./SingleTask";
 import AddItemForm from "./AddItemForm";
@@ -20,34 +20,53 @@ type TaskListPropsType = {
     removeListCallback: (id:string) => void,
 }
 
-const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, changeStatusCallback, changeTaskTitle, changeListTitle, addTaskCallback, title, changeFilter, filter, id, removeListCallback}) => {
-    const s = {
+const Todolist: React.FC<TaskListPropsType> = React.memo((props) => {
+    const {
+        tasks,
+        deleteTaskCallback,
+        changeStatusCallback,
+        changeTaskTitle,
+        changeListTitle,
+        addTaskCallback,
+        title,
+        changeFilter,
+        filter,
+        id,
+        removeListCallback
+    } = props
+
+    const flexWrap = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
     }
 
-    const mappedList = tasks.map((t: TaskType)  => (
+    let filteredTasks = tasks;
+
+    if (filter === "completed") filteredTasks = tasks.filter(t => t.isDone)
+    else if (filter === "active") filteredTasks = tasks.filter(t => !t.isDone)
+
+    const mappedList = filteredTasks.map((t: TaskType)  => (
         <SingleTask
             key={t.id}
             listId={id}
-            data={t}
+            singleTask={t}
             deleteTaskCallback={deleteTaskCallback}
             changeStatusCallback={changeStatusCallback}
             changeTaskTitle={changeTaskTitle}
         />
     ))
 
-    const onAllClickHandler = () => changeFilter(id, "all")
-    const onActiveClickHandler = () => changeFilter(id,"active")
-    const onCompletedClickHandler = () => changeFilter(id,"completed")
+    const onAllClickHandler = useCallback(() => changeFilter(id, "all"), [changeFilter, id])
+    const onActiveClickHandler = useCallback(() => changeFilter(id,"active"), [changeFilter, id])
+    const onCompletedClickHandler = useCallback(() => changeFilter(id,"completed"), [changeFilter, id])
     const onClickRemoveHandler = () => removeListCallback(id)
-    const handleAdd = (itemTitle: string) => addTaskCallback(itemTitle, id)
+    const handleAdd = useCallback((itemTitle: string) => addTaskCallback(itemTitle, id), [addTaskCallback, id])
     const handleChangeTitle = (newTitle: string) => changeListTitle(id, newTitle)
 
     return (
         <div>
-            <div style={s}>
+            <div style={flexWrap}>
                 <h3>
                     <EditableSpan title={title} onChange={handleChangeTitle}/>
                 </h3>
@@ -66,6 +85,6 @@ const Todolist: React.FC<TaskListPropsType> = ({tasks, deleteTaskCallback, chang
             </div>
         </div>
     )
-}
+})
 
 export default Todolist
