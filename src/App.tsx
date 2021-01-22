@@ -81,7 +81,7 @@ export const addTask = (taskList: TaskStateType, title: string, listId: string):
     taskList[listId] = [newTask, ...taskList[listId]]
     return {...taskList}
 }
-
+//no-reducers, no-redux
 function App() {
     const [tasks, setTasks] = useState<TaskStateType>(initData)
     const [todoList, setTodoList] = useState<Array<TodolistType>>(initTodolist)
