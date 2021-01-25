@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useCallback} from 'react'
-import {TaskType} from "./App";
+import React, {ChangeEvent} from 'react'
+import {TaskType} from "./AppWithRedux";
 import EditableSpan from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
@@ -14,7 +14,7 @@ type SingleTaskPropsType = {
 
 const SingleTaskRedux : React.FC<SingleTaskPropsType> = React.memo(({taskId, listId}) => {
 
-    const storeTask = useSelector<AppRootStateType, TaskType>(state => state.tasks[listId].filter(t => t.id = taskId)[0])
+    const storeTask = useSelector<AppRootStateType, TaskType>(state => state.tasks[listId].filter(t => t.id === taskId)[0])
     const dispatch = useDispatch()
 
     const onClickHandler = () => dispatch(removeTaskAC(taskId, listId))
@@ -23,7 +23,6 @@ const SingleTaskRedux : React.FC<SingleTaskPropsType> = React.memo(({taskId, lis
         dispatch(changeTaskStatusAC(taskId, newStatus, listId))
     }
     const onChangeTitleHandler = (newTitle: string) => dispatch(changeTaskTitleAC(taskId, newTitle, listId))
-
     return (
         <div className={storeTask.isDone ? "is-done" : ""}>
             <Checkbox onChange={onChangeStatusHandler} color={"primary"} checked={storeTask.isDone}/>

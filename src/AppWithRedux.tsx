@@ -10,7 +10,7 @@ import {
     ChangeTodoListTitleAC,
     RemoveTodoListAC,
 } from "./state/todolist-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/task-reducer";
+import {addTaskAC} from "./state/task-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 
@@ -37,17 +37,8 @@ function AppWithRedux() {
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
-    const deleteTaskCallback = useCallback((id: string, listId: string) => {
-        dispatch(removeTaskAC(id, listId))
-    }, [dispatch])
     const addTaskCallback = useCallback((title: string, listId: string) => {
         dispatch(addTaskAC(title, listId))
-    }, [dispatch])
-    const changeStatusCallback = useCallback((id: string, status: boolean, listId: string) => {
-        dispatch(changeTaskStatusAC(id, status, listId))
-    }, [dispatch])
-    const changeTaskTitleCallback = useCallback((id: string, newTitle: string, listId: string) => {
-        dispatch(changeTaskTitleAC(id, newTitle, listId))
     }, [dispatch])
 
     const changeFilter = useCallback((todoListID: string, filter: FilterValuesType) => {
@@ -85,18 +76,15 @@ function AppWithRedux() {
                 <Grid container spacing={3}>
                     {
                         todoList.map(tl => {
-                            return <Grid item>
+                            return <Grid item key={tl.id}>
                                 <Paper style={{padding: "20px"}}>
                                     <Todolist
                                         key={tl.id}
-                                        id={tl.id}
+                                        listId={tl.id}
                                         title={tl.title}
                                         tasks={tasks[tl.id]}
-                                        deleteTaskCallback={deleteTaskCallback}
                                         changeFilter={changeFilter}
                                         addTaskCallback={addTaskCallback}
-                                        changeStatusCallback={changeStatusCallback}
-                                        changeTaskTitle={changeTaskTitleCallback}
                                         changeListTitle={changeListTitle}
                                         filter={tl.filter}
                                         removeListCallback={removeList} />

@@ -5,8 +5,8 @@ import {
     removeTaskAC,
     taskReducer
 } from './task-reducer';
-import {TaskStateType, TodolistType} from '../App';
-import {AddTodoListAC, RemoveTodoListAC, todolistReducer} from "./todolist-reducer";
+import {TaskStateType} from '../AppWithRedux';
+import {AddTodoListAC} from "./todolist-reducer";
 
 let startState: TaskStateType
 
@@ -56,6 +56,7 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].id).toBeDefined();
     expect(endState["todolistId2"][0].title).toBe("juice");
     expect(endState["todolistId2"][0].isDone).toBe(false);
+    expect(endState["todolistId2"][1].id).toBe("1")
 });
 
 

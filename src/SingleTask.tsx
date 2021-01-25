@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback} from 'react'
-import {TaskType} from "./App";
+import {TaskType} from "./AppWithRedux";
 import EditableSpan from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";

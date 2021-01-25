@@ -1,37 +1,31 @@
 import React, {useCallback} from "react";
-import {FilterValuesType, TaskType} from "./App";
-import SingleTask from "./SingleTask";
+import {FilterValuesType, TaskType} from "./AppWithRedux";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {IconButton, Button} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import SingleTaskRedux from "./SingleTaskRedux";
 
 type TaskListPropsType = {
     title: string
     tasks: Array<TaskType>
-    deleteTaskCallback: (id: string, listId: string) => void
     changeFilter: (listId: string, value: FilterValuesType) => void
     addTaskCallback: (title: string, listId: string) => void
-    changeStatusCallback : (id: string, isDone: boolean, listId: string) => void
-    changeTaskTitle: (id: string, newValue: string, listId: string) => void
     changeListTitle: (id: string, newValue: string) => void
     filter: string,
-    id: string,
+    listId: string,
     removeListCallback: (id:string) => void,
 }
 
 const Todolist: React.FC<TaskListPropsType> = React.memo((props) => {
     const {
         tasks,
-        deleteTaskCallback,
-        changeStatusCallback,
-        changeTaskTitle,
         changeListTitle,
         addTaskCallback,
         title,
         changeFilter,
         filter,
-        id,
+        listId,
         removeListCallback
     } = props
 
@@ -42,27 +36,18 @@ const Todolist: React.FC<TaskListPropsType> = React.memo((props) => {
     }
 
     let filteredTasks = tasks;
-
     if (filter === "completed") filteredTasks = tasks.filter(t => t.isDone)
     else if (filter === "active") filteredTasks = tasks.filter(t => !t.isDone)
 
-    const mappedList = filteredTasks.map((t: TaskType)  => (
-        <SingleTask
-            key={t.id}
-            listId={id}
-            singleTask={t}
-            deleteTaskCallback={deleteTaskCallback}
-            changeStatusCallback={changeStatusCallback}
-            changeTaskTitle={changeTaskTitle}
-        />
-    ))
+    const mappedList = filteredTasks.map((t: TaskType)  =>
+        <SingleTaskRedux taskId={t.id} listId={listId} key={t.id} />)
 
-    const onAllClickHandler = useCallback(() => changeFilter(id, "all"), [changeFilter, id])
-    const onActiveClickHandler = useCallback(() => changeFilter(id,"active"), [changeFilter, id])
-    const onCompletedClickHandler = useCallback(() => changeFilter(id,"completed"), [changeFilter, id])
-    const onClickRemoveHandler = () => removeListCallback(id)
-    const handleAdd = useCallback((itemTitle: string) => addTaskCallback(itemTitle, id), [addTaskCallback, id])
-    const handleChangeTitle = (newTitle: string) => changeListTitle(id, newTitle)
+    const onAllClickHandler = useCallback(() => changeFilter(listId, "all"), [changeFilter, listId])
+    const onActiveClickHandler = useCallback(() => changeFilter(listId,"active"), [changeFilter, listId])
+    const onCompletedClickHandler = useCallback(() => changeFilter(listId,"completed"), [changeFilter, listId])
+    const onClickRemoveHandler = () => removeListCallback(listId)
+    const handleAdd = useCallback((itemTitle: string) => addTaskCallback(itemTitle, listId), [addTaskCallback, listId])
+    const handleChangeTitle = (newTitle: string) => changeListTitle(listId, newTitle)
 
     return (
         <div>
