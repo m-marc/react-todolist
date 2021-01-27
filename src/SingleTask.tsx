@@ -4,7 +4,7 @@ import EditableSpan from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
 
-type TaskListPropType = {
+export type TaskListPropType = {
     singleTask: TaskType,
     deleteTaskCallback: (_id: string, listId: string) => void,
     changeStatusCallback : (id: string, isDone: boolean, listId: string) => void,
