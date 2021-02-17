@@ -77,14 +77,14 @@ export const DeleteTask = () => {
 
     return <div> {JSON.stringify(state)}</div>
 }
-export const UpdateTaskTitle = () => {
-    const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const listId = ''
-        const taskId = ''
-        taskAPI.updateTask(listId, taskId,"Updated title>>>")
-            .then(res => setState(res.data))
-    }, [])
-
-    return <div> {JSON.stringify(state)}</div>
-}
+// export const UpdateTaskTitle = () => {
+//     const [state, setState] = useState<any>(null)
+//     useEffect(() => {
+//         const listId = ''
+//         const taskId = ''
+//         taskAPI.updateTask(listId, taskId,"Updated title>>>")
+//             .then(res => setState(res.data))
+//     }, [])
+//
+//     return <div> {JSON.stringify(state)}</div>
+// }

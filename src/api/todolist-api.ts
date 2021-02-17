@@ -1,14 +1,14 @@
 import axios from 'axios'
 import {Api} from "./api-key";
 
-type TodolistType = {
+export type TodolistType = {
     id: string,
     addedDate: string,
     order: number,
     title: string
 }
 
-type TaskType = {
+export type TaskType = {
     description: string,
     title: string,
     completed: boolean,
@@ -72,6 +72,7 @@ const instance = axios.create({
 export const todolistAPI = {
     createTodo(title: string) {
         return instance.post<ResponseType<{item: TodolistType}>>('todo-lists',{title})
+            .then(res => res.data)
     },
     getTodos() {
         return instance.get<Array<TodolistType>>('todo-lists')
@@ -91,8 +92,8 @@ export const taskAPI = {
     getTasks(listId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${listId}/tasks`)
     },
-    updateTask(listId: string, taskId: string, title: string) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${listId}/tasks/${taskId}`,{title})
+    updateTask(listId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<ResponseType<TaskType>>(`todo-lists/${listId}/tasks/${taskId}`,model)
     },
     deleteTask(listId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${listId}/tasks/${taskId}`)

@@ -3,10 +3,10 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    taskReducer
-} from './task-reducer';
-import {TaskStateType, TodolistType} from '../App';
-import {AddTodoListAC, RemoveTodoListAC, todolistReducer} from "./todolist-reducer";
+    reducers
+} from './reducers';
+import {TaskStateType, TodolistType} from '../../App';
+import {AddTodoListAC, RemoveTodoListAC, reducers} from "../todo-list/reducers";
 
 let startState: TaskStateType
 
@@ -29,7 +29,7 @@ test('correct task should be deleted from correct array', () => {
 
     const action = removeTaskAC("2", "todolistId2");
 
-    const endState = taskReducer(startState, action)
+    const endState = reducers(startState, action)
 
     expect(endState).toEqual({
         "todolistId1": [
@@ -49,7 +49,7 @@ test('correct task should be added to correct array', () => {
 
     const action = addTaskAC("juice", "todolistId2");
 
-    const endState = taskReducer(startState, action)
+    const endState = reducers(startState, action)
 
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(4);
@@ -63,7 +63,7 @@ test('status of specified task should be changed', () => {
 
     const action = changeTaskStatusAC("2", false, "todolistId2");
 
-    const endState = taskReducer(startState, action)
+    const endState = reducers(startState, action)
 
     expect(endState["todolistId2"][1].isDone).toBe(false);
     expect(endState["todolistId1"][1].isDone).toBe(true);
@@ -73,7 +73,7 @@ test('title of specified task should be changed', () => {
 
     const action = changeTaskTitleAC("2", "coffee", "todolistId2");
 
-    const endState = taskReducer(startState, action)
+    const endState = reducers(startState, action)
 
     expect(endState["todolistId2"][1].title).toBe("coffee");
     expect(endState["todolistId1"][1].title).toBe("JS");
@@ -84,7 +84,7 @@ test('new array should be added when new todolist is added', () => {
 
     const action = AddTodoListAC("new todolist");
 
-    const endState = taskReducer(startState, action)
+    const endState = reducers(startState, action)
 
 
     const keys = Object.keys(endState);
