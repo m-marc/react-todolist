@@ -1,5 +1,5 @@
 import {TodolistType} from "../../api/todolist-api"
-import {ACTION_TYPES, TodolistActionTypes} from "./actions";
+import {TodolistActionTypes} from "./actions";
 
 export type TodolistDomainType = TodolistType & {
     filter?: FilterValuesType,
@@ -10,21 +10,21 @@ const initialState: TodolistType[] = []
 
 export const todolistReducer = (state: TodolistDomainType[] = initialState, action: TodolistActionTypes): TodolistDomainType[] => {
     switch (action.type) {
-        case ACTION_TYPES.REMOVE_LIST:
+        case "Todolist/remove_list":
             return state.filter(tl => tl.id !== action.listId)
-        case ACTION_TYPES.ADD_LIST:
+        case 'Todolist/add_list':
             return [action.todo, ...state]
-        case ACTION_TYPES.CHANGE_TITLE: {
+        case 'Todolist/change_title': {
             const todoList = state.find(tl => tl.id === action.id)
             todoList && (todoList.title = action.title)
             return [...state]
         }
-        case ACTION_TYPES.CHANGE_FILTER: {
+        case 'Todolist/change_filter': {
             const todoList = state.find(tl => tl.id === action.id)
             todoList && (todoList.filter = action.filter)
             return [...state]
         }
-        case ACTION_TYPES.GET_TODOS:
+        case 'Todolist/get_todos':
             return action.todos.map( t => ({...t, filter: "all"}))
         default:
             return state

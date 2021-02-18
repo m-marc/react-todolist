@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import Todolist from "./Todolist";
 import AddItemForm from "./AddItemForm";
-import {AppBar, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
@@ -16,6 +16,8 @@ import {changeTodolistFilter} from "./state/todo-list/actions";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {FilterValuesType, TodolistDomainType} from "./state/todo-list/reducers";
 import {thunkAddTask, thunkRemoveTask, thunkUpdateTaskStatus, thunkUpdateTaskTitle} from "./state/task/thunks";
+import {RequestStatusType} from "./state/app/actions";
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 
 export type TaskStateType = {
     [key:string] : Array<TaskType>
@@ -30,6 +32,7 @@ function AppWithRedux() {
 
     const todoList = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     const deleteTaskCallback = useCallback((id: string, listId: string) => {
         dispatch(thunkRemoveTask(listId, id))
@@ -61,6 +64,7 @@ function AppWithRedux() {
     }, [dispatch])
     return (
         <div className="App">
+            <ErrorSnackbar />
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -70,6 +74,7 @@ function AppWithRedux() {
                         Simple Todolist
                     </Typography>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress color="secondary"/>}
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px 0"}}>
