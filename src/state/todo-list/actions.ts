@@ -1,5 +1,6 @@
 import {TodolistType} from "../../api/todolist-api";
 import {FilterValuesType} from "./reducers";
+import {RequestStatusType} from "../app/actions";
 
 export const removeTodolist = (listId: string) => 
     ({type: "Todolist/remove_list", listId} as const)
@@ -21,8 +22,13 @@ export const changeTodolistFilter = (id: string, filter: FilterValuesType) =>
     ({type: 'Todolist/change_filter', id, filter} as const)
 export type changeTodolistFilterAction = ReturnType<typeof changeTodolistFilter>
 
-export type TodolistActionTypes = RemoveListAction 
-    | getTodolistAction 
-    | addTodolistAction 
+export const changeTodolistEntityStatus = (id: string, entityStatus: RequestStatusType) =>
+    ({type: 'Todolist/change_entity_status', id, entityStatus} as const)
+export type changeTodolistEntityStatusAction = ReturnType<typeof changeTodolistEntityStatus>
+
+export type TodolistActionTypes = RemoveListAction
+    | getTodolistAction
+    | addTodolistAction
     | changeTodolistTitleAction
     | changeTodolistFilterAction
+    | changeTodolistEntityStatusAction

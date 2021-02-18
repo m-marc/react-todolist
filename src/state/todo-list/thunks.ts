@@ -1,7 +1,8 @@
 import {Dispatch} from "redux";
 import {todolistAPI} from "../../api/todolist-api";
-import {addTodolist, changeTodolistTitle, getTodolist, removeTodolist} from "./actions";
+import {addTodolist, changeTodolistEntityStatus, changeTodolistTitle, getTodolist, removeTodolist} from "./actions";
 import {setAppStatus} from "../app/actions";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 export const thunkFetchTodolist = () => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
@@ -10,24 +11,34 @@ export const thunkFetchTodolist = () => (dispatch: Dispatch) => {
             dispatch(getTodolist(res.data))
             dispatch(setAppStatus('succeeded'))
         })
+         .catch(error => handleServerNetworkError(error, dispatch))
 }
 
 export const thunkRemoveTodolist = (listId: string) => (dispatch: Dispatch) => {
+    dispatch(changeTodolistEntityStatus(listId, "loading"))
     dispatch(setAppStatus('loading'))
      todolistAPI.deleteList(listId)
-        .then(() => {
-            dispatch(removeTodolist(listId))
-            dispatch(setAppStatus('succeeded'))
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(removeTodolist(listId))
+                dispatch(setAppStatus('succeeded'))
+            }
+            else handleServerAppError(res.data, dispatch)
         })
+         .catch(error => handleServerNetworkError(error, dispatch))
 }
 
 export const thunkAddTodolist = (title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
     todolistAPI.createTodo(title)
         .then(res => {
-            dispatch(addTodolist(res.data.item))
-            dispatch(setAppStatus('succeeded'))
+            if (res.resultCode === 0) {
+                dispatch(addTodolist(res.data.item))
+                dispatch(setAppStatus('succeeded'))
+            }
+            else handleServerAppError(res, dispatch)
         })
+        .catch(error => handleServerNetworkError(error, dispatch))
 }
 
 export const thunkChangeTodolistTitle = (id: string, title: string) =>
@@ -38,5 +49,6 @@ export const thunkChangeTodolistTitle = (id: string, title: string) =>
                 dispatch(changeTodolistTitle(id, title))
                 dispatch(setAppStatus('succeeded'))
             })
+            .catch(error => handleServerNetworkError(error, dispatch))
 }
 
