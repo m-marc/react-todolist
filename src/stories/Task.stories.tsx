@@ -3,7 +3,7 @@ import React from 'react';
 import {Meta, Story} from '@storybook/react/types-6-0';
 
 import {action} from "@storybook/addon-actions";
-import SingleTask, {TaskListPropType} from "../SingleTask";
+import SingleTask, {TaskListPropType} from "../components/SingleTask/SingleTask";
 import {TaskStatuses} from "../api/todolist-api";
 
 export default {

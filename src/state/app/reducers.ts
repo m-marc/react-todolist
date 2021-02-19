@@ -1,4 +1,4 @@
-import {ActionsType, RequestStatusType} from "./actions";
+import {AppActionsType as ActionsType, RequestStatusType} from "./actions";
 
 const initialState = {
     status: 'loading' as RequestStatusType,

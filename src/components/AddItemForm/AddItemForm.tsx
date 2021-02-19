@@ -10,10 +10,7 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({ addItem
     const [stateTitle, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         error && setError(null)
         if (e.key === "Enter") handleClick()
