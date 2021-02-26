@@ -52,7 +52,12 @@ type GetTasksResponse = {
     totalCount: number
     items: TaskType[]
 }
-
+type AuthLoginType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha?: string
+}
 
 const settings = {
     withCredentials: true,
@@ -89,9 +94,15 @@ export const taskAPI = {
         return instance.get<GetTasksResponse>(`todo-lists/${listId}/tasks`)
     },
     updateTask(listId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${listId}/tasks/${taskId}`,model)
+        return instance.put<ResponseType<{item:TaskType}>>(`todo-lists/${listId}/tasks/${taskId}`,model)
     },
     deleteTask(listId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${listId}/tasks/${taskId}`)
+    }
+}
+
+export const authAPI = {
+    login(data: AuthLoginType) {
+        return instance.post<ResponseType<{userId: number}>>(`auth/login`, data).then(r => r.data)
     }
 }

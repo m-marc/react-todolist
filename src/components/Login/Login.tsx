@@ -10,13 +10,21 @@ import {
     TextField
 } from "@material-ui/core";
 import {Field, FieldAttributes, Form, Formik, FormikHelpers, useField} from "formik"
-import {CheckBox} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import {thunkLogin} from "../../state/auth/thunks";
 
 interface Values {
     email: string,
     password: string,
     rememberMe: boolean
 }
+
+type FormikErrorType = {
+    email?: string
+    password?: string
+    rememberMe?: boolean
+}
+
 
 type myCheckboxProps = { label : string } & FieldAttributes<{}>
 
@@ -26,6 +34,7 @@ const MyCheckbox: React.FC<myCheckboxProps> = ({label, ...props}) => {
 }
 
 export const Login = () => {
+    const dispatch = useDispatch()
     return <Grid container justify="center">
         <Grid item xs={4}>
             <Formik
@@ -34,19 +43,31 @@ export const Login = () => {
                     password: '',
                     rememberMe: false
                 }}
+                validate={values => {
+                    const errors: FormikErrorType = {}
+                    if (!values.email) errors.email = 'Required'
+                    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email))
+                        errors.email = 'Invalid email address'
+                    if(values.password.length < 3) {
+                        errors.password = 'Too short password'
+                    }
+                    return errors
+                }}
                 onSubmit={(
                     values: Values,
-                    {setSubmitting}: FormikHelpers<Values>
+                    {setSubmitting, resetForm}: FormikHelpers<Values>,
                 ) => {
-                    alert(JSON.stringify(values))
+                    setSubmitting(true)
+                    dispatch(thunkLogin(values))
                     setSubmitting(false)
+                    resetForm()
                 }}
             >
-                {({values, isSubmitting, errors, touched}) => (
+                {({handleBlur, errors, touched}) => (
                 <Form>
                     <FormControl>
                         <FormLabel>
-                            <p>To log in get registered
+                            <p>To log in get registered&nbsp;
                                 <a href={'https://social-network.samuraijs.com/'}
                                    target={'_blank'}>here
                                 </a>
@@ -56,8 +77,12 @@ export const Login = () => {
                             <p>Password: free</p>
                         </FormLabel>
                         <FormGroup>
-                            <Field label="Email" margin="normal" name="email" as={TextField}/>
-                            <Field type="password" label="Password" margin="normal" name="password" as={TextField}/>
+                            <Field error={touched.email && !!errors.email} label="Email"
+                                   helperText={touched.email && errors.email} name="email"
+                                   margin="normal" onBlur={handleBlur} as={TextField}/>
+                            <Field error={touched.password && !!errors.password} type="password"
+                                   helperText={touched.password && errors.password} label="Password"
+                                   margin="normal" onBlur={handleBlur}  name="password" as={TextField}/>
                             <Field label={'Remember me'} name={"rememberMe"} as={MyCheckbox}/>
                             <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
                         </FormGroup>
