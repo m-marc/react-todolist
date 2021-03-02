@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {taskAPI} from "../../api/todolist-api";
+import {taskAPI} from "../../api/api";
 import {
     addTask,
     changeTaskEntityStatus,

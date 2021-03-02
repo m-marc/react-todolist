@@ -1,4 +1,4 @@
-import {TodolistType} from "../../api/todolist-api";
+import {TodolistType} from "../../api/api";
 import {FilterValuesType} from "./reducers";
 import {RequestStatusType} from "../app/actions";
 export type TodolistActionTypes = RemoveListAction

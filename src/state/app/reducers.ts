@@ -1,8 +1,9 @@
 import {AppActionsType as ActionsType, RequestStatusType} from "./actions";
 
 const initialState = {
-    status: 'loading' as RequestStatusType,
-    error: null as string | null
+    status: 'idle' as RequestStatusType,
+    error: null as string | null,
+    isInitialized: false
 }
 
 type InitialStateType = typeof initialState
@@ -13,6 +14,8 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
             return {...state, status: action.status}
         case "app/set_error":
             return {...state, error: action.error}
+        case "app/set_initialize":
+            return {...state, isInitialized: action.value}
         default:
             return state
     }

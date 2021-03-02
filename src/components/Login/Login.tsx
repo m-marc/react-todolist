@@ -10,8 +10,10 @@ import {
     TextField
 } from "@material-ui/core";
 import {Field, FieldAttributes, Form, Formik, FormikHelpers, useField} from "formik"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {thunkLogin} from "../../state/auth/thunks";
+import {AppRootStateType} from "../../state/store";
+import {Redirect} from "react-router-dom";
 
 interface Values {
     email: string,
@@ -35,6 +37,10 @@ const MyCheckbox: React.FC<myCheckboxProps> = ({label, ...props}) => {
 
 export const Login = () => {
     const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+    if (isLoggedIn) return <Redirect to={"/react-todolist"} />
+
     return <Grid container justify="center">
         <Grid item xs={4}>
             <Formik

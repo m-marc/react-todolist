@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react/types-6-0';
 
 import {action} from "@storybook/addon-actions";
 import SingleTask, {TaskListPropType} from "../components/SingleTask/SingleTask";
-import {TaskStatuses} from "../api/todolist-api";
+import {TaskStatuses} from "../api/api";
 
 export default {
     title: "Todolist/SingleTask",

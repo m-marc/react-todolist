@@ -1,17 +1,41 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    LinearProgress,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {RequestStatusType} from "./state/app/actions";
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistContainer} from "./containers/TodolistContainer/TodolistContainer";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Login} from "./components/Login/Login";
+import {thunkAuth, thunkLogout} from "./state/auth/thunks";
 
 function App() {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const dispatch = useDispatch()
+
+    useEffect( ()=> {
+        dispatch(thunkAuth())
+    }, [])
+
+    const logoutHandle = useCallback(() => {
+        dispatch(thunkLogout())
+    }, [])
+
+    if (!isInitialized) return <CircularProgress />
+
     return <BrowserRouter>
         <div className="App">
             <ErrorSnackbar />
@@ -23,7 +47,7 @@ function App() {
                     <Typography variant="h6">
                         Simple Todolist
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandle}>Log out</Button>}
                 </Toolbar>
             </AppBar>
             <div style={{minHeight: '4px'}}>
@@ -31,7 +55,7 @@ function App() {
             </div>
             <Container fixed>
                 <Switch>
-                    <Route exact path={"/"} render={() => <TodolistContainer />} />
+                    <Route path={"/react-todolist"} component={TodolistContainer} />
                     <Route path={"/login"} component={Login} />
                     <Route render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 </Switch>

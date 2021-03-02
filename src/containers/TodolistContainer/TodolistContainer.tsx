@@ -6,18 +6,23 @@ import {TodolistDomainType} from "../../state/todo-list/reducers";
 import {Grid, Paper} from "@material-ui/core";
 import AddItemForm from "../../components/AddItemForm/AddItemForm";
 import Todolist from "../../components/Todolist/Todolist";
+import {Redirect} from "react-router-dom";
 
-export const TodolistContainer: React.FC = () => {
+export const TodolistContainer = () => {
     const dispatch = useDispatch()
     const todoList = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolist)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
 
     useEffect(() => {
-        dispatch(thunkFetchTodolist())
+        isLoggedIn && dispatch(thunkFetchTodolist())
     }, [dispatch])
 
     const addNewList = useCallback((title: string) => {
         dispatch(thunkAddTodolist(title))
     }, [dispatch])
+
+    if (!isLoggedIn) return <Redirect to={"/login"}/>
 
     return <>
         <Grid container style={{padding: "20px 0"}}>

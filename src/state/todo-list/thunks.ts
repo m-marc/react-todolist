@@ -1,12 +1,12 @@
 import {Dispatch} from "redux";
-import {todolistAPI} from "../../api/todolist-api";
+import {api} from "../../api/api";
 import {addTodolist, changeTodolistEntityStatus, changeTodolistTitle, getTodolist, removeTodolist} from "./actions";
 import {setAppStatus} from "../app/actions";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 export const thunkFetchTodolist = () => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
-     todolistAPI.getTodos()
+     api.getTodos()
         .then(res => {
             dispatch(getTodolist(res.data))
             dispatch(setAppStatus('succeeded'))
@@ -17,7 +17,7 @@ export const thunkFetchTodolist = () => (dispatch: Dispatch) => {
 export const thunkRemoveTodolist = (listId: string) => (dispatch: Dispatch) => {
     dispatch(changeTodolistEntityStatus(listId, "loading"))
     dispatch(setAppStatus('loading'))
-     todolistAPI.deleteList(listId)
+     api.deleteList(listId)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(removeTodolist(listId))
@@ -30,7 +30,7 @@ export const thunkRemoveTodolist = (listId: string) => (dispatch: Dispatch) => {
 
 export const thunkAddTodolist = (title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatus('loading'))
-    todolistAPI.createTodo(title)
+    api.createTodo(title)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(addTodolist(res.data.item))
@@ -44,7 +44,7 @@ export const thunkAddTodolist = (title: string) => (dispatch: Dispatch) => {
 export const thunkChangeTodolistTitle = (id: string, title: string) =>
     (dispatch: Dispatch) => {
         dispatch(setAppStatus('loading'))
-        todolistAPI.updateList(id, title)
+        api.updateList(id, title)
             .then(() => {
                 dispatch(changeTodolistTitle(id, title))
                 dispatch(setAppStatus('succeeded'))

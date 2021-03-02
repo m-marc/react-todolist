@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {TaskStatuses, TaskType} from "../../api/todolist-api";
+import {TaskStatuses, TaskType} from "../../api/api";
 import SingleTask from "../SingleTask/SingleTask";
 import AddItemForm from "../AddItemForm/AddItemForm";
 import EditableSpan from "../EditableSpan/EditableSpan";

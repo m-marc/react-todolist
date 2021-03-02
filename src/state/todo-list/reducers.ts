@@ -1,4 +1,4 @@
-import {TodolistType} from "../../api/todolist-api"
+import {TodolistType} from "../../api/api"
 import {TodolistActionTypes} from "./actions";
 import {RequestStatusType} from "../app/actions";
 

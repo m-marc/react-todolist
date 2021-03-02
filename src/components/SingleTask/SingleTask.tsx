@@ -1,9 +1,9 @@
 import React, {ChangeEvent} from 'react'
-import {TaskType} from "../../api/todolist-api";
+import {TaskType} from "../../api/api";
 import EditableSpan from "../EditableSpan/EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
-import {TaskStatuses} from "../../api/todolist-api";
+import {TaskStatuses} from "../../api/api";
 import {useDispatch} from "react-redux";
 import {thunkRemoveTask, thunkUpdateTask} from "../../state/task/thunks";
 import {updateTask} from "../../state/task/actions";

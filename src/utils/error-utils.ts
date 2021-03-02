@@ -1,6 +1,6 @@
 import { setAppError, setAppStatus, AppActionsType as ActionsType } from '../state/app/actions';
 import { Dispatch } from 'redux';
-import { ResponseType } from '../api/todolist-api';
+import { ResponseType } from '../api/api';
 
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {

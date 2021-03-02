@@ -1,5 +1,5 @@
 import {addTodolistAction, getTodolistAction, RemoveListAction} from "../todo-list/actions";
-import {TaskPriorities, TaskStatuses, TaskType} from "../../api/todolist-api";
+import {TaskPriorities, TaskStatuses, TaskType} from "../../api/api";
 import {RequestStatusType} from "../app/actions";
 export type UpdateDomainTaskModelType = {
     title?: string

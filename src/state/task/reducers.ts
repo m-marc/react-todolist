@@ -1,5 +1,5 @@
 import {TasksActionTypes} from "./actions";
-import {TaskType} from "../../api/todolist-api";
+import {TaskType} from "../../api/api";
 
 export type TaskStateType = { [key:string] : Array<TaskType> }
 const initialState: TaskStateType = {}

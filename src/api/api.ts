@@ -70,7 +70,7 @@ const instance = axios.create({
     ...settings
 })
 
-export const todolistAPI = {
+export const api = {
     createTodo(title: string) {
         return instance.post<ResponseType<{item: TodolistType}>>('todo-lists',{title})
             .then(res => res.data)
@@ -104,5 +104,11 @@ export const taskAPI = {
 export const authAPI = {
     login(data: AuthLoginType) {
         return instance.post<ResponseType<{userId: number}>>(`auth/login`, data).then(r => r.data)
+    },
+    me() {
+        return instance.get<ResponseType<{id: number, email: string, login: string}>>(`auth/me`).then(r => r.data)
+    },
+    logout() {
+        return instance.delete<ResponseType<{}>>(`auth/login`).then(r => r.data)
     }
 }
