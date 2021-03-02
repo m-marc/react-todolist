@@ -16,7 +16,7 @@ export const TodolistContainer = () => {
 
     useEffect(() => {
         isLoggedIn && dispatch(thunkFetchTodolist())
-    }, [dispatch])
+    }, [dispatch, isLoggedIn])
 
     const addNewList = useCallback((title: string) => {
         dispatch(thunkAddTodolist(title))

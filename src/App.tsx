@@ -28,11 +28,11 @@ function App() {
 
     useEffect( ()=> {
         dispatch(thunkAuth())
-    }, [])
+    }, [dispatch])
 
     const logoutHandle = useCallback(() => {
         dispatch(thunkLogout())
-    }, [])
+    }, [dispatch])
 
     if (!isInitialized) return <CircularProgress />
 
